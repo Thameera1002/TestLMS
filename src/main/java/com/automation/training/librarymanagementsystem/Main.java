@@ -1,14 +1,20 @@
 package com.automation.training.librarymanagementsystem;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         Library library = new Library();
 
-        LibraryItems book1 = new Book("Book1","BookAuthor1","B1001");
-        LibraryItems book2 = new Book("Book2","BookAuthor2","B1002");
-        LibraryItems magazine1 = new Magazine("Magazine1","MagAuthor1","M1001");
+        List<LibraryItems> libraryItems = LibraryIO.loadItemsFromFile("itemList.lms");
+        for (LibraryItems libraryItem : libraryItems) {
+            library.addItem(libraryItem);
+        }
+
+        LibraryItems book1 = new Book("Book3","BookAuthor3","B1003");
+        LibraryItems book2 = new Book("Book4","BookAuthor4","B1004");
+        LibraryItems magazine1 = new Magazine("Magazine2","MagAuthor2","M1002");
 
         User user1 = new User("Amal");
         User user2 = new User("Sunil");
@@ -31,5 +37,7 @@ public class Main {
             System.out.println(library.getUserList().get(i).getName());
             System.out.println();
         }
+
+        LibraryIO.saveItemsToFile(library.getLibraryItem(),"itemList.lms");
     }
 }

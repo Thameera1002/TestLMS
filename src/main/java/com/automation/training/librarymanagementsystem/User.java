@@ -1,6 +1,8 @@
 package com.automation.training.librarymanagementsystem;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     String name;
 
     public User(String name) {

@@ -1,6 +1,8 @@
 package com.automation.training.librarymanagementsystem;
 
-public abstract class LibraryItems {
+import java.io.Serializable;
+
+public abstract class LibraryItems implements Serializable {
     private String title;
     private String author;
     private String serialNumber;
