@@ -1,7 +1,7 @@
 package com.automation.training.librarymanagementsystem;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryIO {
@@ -11,6 +11,18 @@ public class LibraryIO {
             System.out.println("Library Items Saved to the file "+fileName+" successfully.");
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public static List<LibraryItems> loadItemsFromFile(String fileName){
+        File file = new File(fileName);
+        if (!file.exists()){
+           return new ArrayList<>();
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))){
+            return (List<LibraryItems>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }
