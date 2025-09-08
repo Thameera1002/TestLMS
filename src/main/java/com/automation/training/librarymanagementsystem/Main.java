@@ -2,6 +2,7 @@ package com.automation.training.librarymanagementsystem;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,32 +13,32 @@ public class Main {
             library.addItem(libraryItem);
         }
 
-        LibraryItems book1 = new Book("Book3","BookAuthor3","B1003");
-        LibraryItems book2 = new Book("Book4","BookAuthor4","B1004");
-        LibraryItems magazine1 = new Magazine("Magazine2","MagAuthor2","M1002");
-
-        User user1 = new User("Amal");
-        User user2 = new User("Sunil");
-
-        library.addItem(book1);
-        library.addItem(book2);
-        library.addItem(magazine1);
-
-        library.addUser(user1);
-        library.addUser(user2);
-
-        for (int i = 0; i < library.getLibraryItem().size(); i++) {
-            System.out.println(library.getLibraryItem().get(i).getTitle());
-            System.out.println(library.getLibraryItem().get(i).getAuthor());
-            System.out.println(library.getLibraryItem().get(i).getSerialNumber());
-            System.out.println();
-
+        List<User> users = LibraryIO.loadUsersFromFile("userList.lms");
+        for (User user : users) {
+            library.addUser(user);
         }
-        for (int i = 0; i < library.getUserList().size(); i++) {
-            System.out.println(library.getUserList().get(i).getName());
-            System.out.println();
+
+        Map<String,String> borrowedItems = LibraryIO.loadBorrowedItemsFromFile("borrowedItemList.lms");
+        for (Map.Entry<String ,String> item : borrowedItems.entrySet()) {
+            library.getBorrowedItems().put(item.getKey(), item.getValue());
         }
+
+        System.out.println("Here, find the list of all library items");
+        library.getLibraryItem().forEach(item -> System.out.println(item.getTitle()+"\t"+item.getAuthor()+"\t"+item.getSerialNumber()));
+        System.out.println("-----------------------------------------");
+
+        System.out.println("Here, find the list of all users");
+        library.getUserList().forEach(user -> System.out.println(user.getName()));
+        System.out.println("-----------------------------------------");
+
+        System.out.println("Here, find the list of all borrowed items");
+        library.getBorrowedItems().forEach((item,user)-> System.out.println(item+"   "+user));
+        System.out.println("-----------------------------------------");
+
+
 
         LibraryIO.saveItemsToFile(library.getLibraryItem(),"itemList.lms");
+        LibraryIO.saveUsersToFile(library.getUserList(),"userList.lms");
+        LibraryIO.saveBorrowedItemsToFile(library.getBorrowedItems(),"borrowedItemList.lms");
     }
 }
